@@ -1,0 +1,52 @@
+@import "vars"
+@import "mixins"
+@import "fonts"
+@import "functions"
+@import "libs"
+@import "additional"
+@import "components"
+@import "icons"
+
+*
+	box-sizing: border-box
+	&:before, &:after
+		box-sizing: border-box
+
+
+body input:focus::placeholder,
+body textarea:focus::placeholder
+	color: transparent
+body a:hover,
+body input:hover,
+body button:hover
+	transition: all .3s ease-out
+body a
+	text-decoration: none
+
+body input,
+body a,
+body textarea
+	outline: none
+
+html
+	font-size: 10px
+
+html, body
+	height: 100%
+
+body
+	font-family: $default-font
+	font-size: $default-font-size
+	font-weight: $default-font-weight
+	color: $default-color
+	line-height: 1.65
+	min-width: 320px
+	position: relative
+	overflow-x: hidden
+	opacity: 1
+	margin: 0
+
+
+
+@import "media"
+
