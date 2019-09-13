@@ -1,3 +1,0 @@
-(function() {
-    //Custom js
-});

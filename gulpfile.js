@@ -51,12 +51,11 @@ gulp.task('browser-sync', function () {
 gulp.task('js', function () {
     arrScripts = [
         'src/libs/jquery/dist/jquery.min.js',
-        'src/js/common.js' // Всегда в конце
+        'src/js/**/*.js' // Всегда в конце
     ];
     switch (task) {
         case 'wp':
-            return gulp.src('src/js/common.js')
-                .pipe(rename({ basename: 'scripts' }))
+            return gulp.src('src/js/**/*.js')
                 .pipe(gulp.dest(`${folder}/js`));
         case 'prod':
             return gulp.src(arrScripts)
@@ -69,8 +68,6 @@ gulp.task('js', function () {
               .pipe(gulp.dest(folder + '/js'));
         case 'dev':
             return gulp.src(arrScripts)
-              .pipe(concat('scripts.js'))
-              .pipe(gulp.dest(folder + '/js'))
               .pipe(browserSync.reload({
                 stream: true
               }));
@@ -124,7 +121,7 @@ gulp.task('sass', function () {
                   outputStyle: 'expanded'
                 }).on('error', sass.logError))
                 .pipe(autoprefixer(['last 5 versions']))
-                .pipe(gulpif(task === 'dev', sourcemaps.write()))
+                .pipe(sourcemaps.write())
                 .pipe(gulp.dest(folder + '/css'))
                 .pipe(browserSync.reload({
                   stream: true
@@ -142,24 +139,6 @@ gulp.task('sass', function () {
         default:
             break;
     }
-  return gulp
-    .src('src/sass/**/*.sass')
-    .pipe(gulpif(task === 'dev', sourcemaps.init()))
-    .pipe(sass({
-      outputStyle: 'expanded'
-    }).on('error', sass.logError))
-    .pipe(autoprefixer(['last 5 versions']))
-    .pipe(gulpif(task === 'prod', cssImport()))
-    .pipe(gulpif(task === 'dev', sourcemaps.write()))
-    .pipe(gulp.dest(folder + '/css'))
-    .pipe(gulpif(task === 'prod', rename({
-      suffix: '.min'
-    })))
-    .pipe(gulpif(task === 'prod', cleanCSS()))
-    .pipe(gulpif(task === 'prod', gulp.dest(folder + '/css')))
-    .pipe(gulpif(task === 'dev', browserSync.reload({
-      stream: true
-    })));
 });
 
 gulp.task(
@@ -167,7 +146,7 @@ gulp.task(
   gulp.parallel('pug', 'sass', 'js', 'browser-sync', function () {
     global.watch = true;
     gulp.watch('src/sass/**/*.sass', gulp.series('sass'));
-    gulp.watch(['src/libs/**/*.js', 'src/js/common.js'], gulp.series('js'));
+    gulp.watch(['src/libs/**/*.js', 'src/js/**/*.js'], gulp.series('js'));
     gulp
       .watch('src/pug/**/*.pug', gulp.series('pug'))
       .on('all', function (event, filepath, status) {
@@ -189,7 +168,6 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('libs', function () {
-    console.log(folder);
   return gulp.src(['src/libs/**/*']).pipe(gulp.dest(`${folder}/libs`));
 });
 
