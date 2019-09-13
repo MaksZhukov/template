@@ -29,5 +29,8 @@
     "gulp-uglify-es": "^1.0.1",
     "gulp-util": "^3.0.8",
     "node-sass": "^4.9.0"
+  },
+  "dependencies": {
+    "gulp-replace": "^1.0.0"
   }
 }
